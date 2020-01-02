@@ -41,6 +41,7 @@ abstract class Question
     public $export = false;
     public $code;
     public static $questionTypes = [
+        BLOCKLY_QUESTION => ['blocklyQuestion.class.php', 'BlocklyQuestion'],
         UNIQUE_ANSWER => ['unique_answer.class.php', 'UniqueAnswer'],
         MULTIPLE_ANSWER => ['multiple_answer.class.php', 'MultipleAnswer'],
         FILL_IN_BLANKS => ['fill_blanks.class.php', 'FillBlanks'],
@@ -68,7 +69,6 @@ abstract class Question
         //MEDIA_QUESTION => array('media_question.class.php' , 'MediaQuestion')
         ANNOTATION => ['Annotation.php', 'Annotation'],
         READING_COMPREHENSION => ['ReadingComprehension.php', 'ReadingComprehension'],
-        BLOCKLY_QUESTION => ['freeanswer.class.php', 'FreeAnswer'],
     ];
 
     /**
@@ -96,6 +96,7 @@ abstract class Question
         $this->parent_id = 0;
         // See BT#12611
         $this->questionTypeWithFeedback = [
+            BLOCKLY_QUESTION
             MATCHING,
             MATCHING_DRAGGABLE,
             DRAGGABLE,
@@ -2011,6 +2012,7 @@ abstract class Question
         }
 
         switch ($this->type) {
+            case BLOCKLY_QUESTION:
             case FREE_ANSWER:
             case ORAL_EXPRESSION:
             case ANNOTATION:
