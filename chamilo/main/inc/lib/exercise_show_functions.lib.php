@@ -142,6 +142,40 @@ class ExerciseShowFunctions
     }
 
     /**
+     * Shows the answer to a BLOCKLY_QUESTION, as HTML.
+     *
+     * @param string    Answer text
+     * @param int       Exercise ID
+     * @param int       Question ID
+     */
+    public static function display_blockly_answer(
+        $feedback_type,
+        $answer,
+        $exe_id,
+        $questionId,
+        $questionScore = null,
+        $resultsDisabled = 0
+    ) {
+        $comments = Event::get_comments($exe_id, $questionId);
+
+        if (!empty($answer)) {
+            echo '<tr><td>';
+            echo Security::remove_XSS($answer);
+            echo '</td></tr>';
+        }
+
+        if ($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM) {
+            if ($questionScore > 0 || !empty($comments)) {
+            } else {
+                echo '<tr>';
+                echo Display::tag('td', ExerciseLib::getNotCorrectedYetText(), []);
+                echo '</tr>';
+            }
+        }
+    }
+
+
+    /**
      * @param $feedback_type
      * @param $answer
      * @param $id
