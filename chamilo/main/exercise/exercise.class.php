@@ -156,7 +156,7 @@ class Exercise
             return false;
         }
 
-        $sql = "SELECT * FROM $table 
+        $sql = "SELECT * FROM $table
                 WHERE c_id = ".$this->course_id." AND id = ".$id;
         $result = Database::query($sql);
 
@@ -204,7 +204,7 @@ class Exercise
 
             $sql = "SELECT lp_id, max_score
                     FROM $tableLpItem
-                    WHERE   
+                    WHERE
                         c_id = {$this->course_id} AND
                         item_type = '".TOOL_QUIZ."' AND
                         path = '".$id."'";
@@ -651,7 +651,7 @@ class Exercise
             $TBL_QUESTIONS = Database::get_course_table(TABLE_QUIZ_QUESTION);
 
             $sql = "SELECT q.iid
-                    FROM $TBL_EXERCICE_QUESTION e 
+                    FROM $TBL_EXERCICE_QUESTION e
                     INNER JOIN $TBL_QUESTIONS  q
                     ON (e.question_id = q.id AND e.c_id = ".$this->course_id." )
 					WHERE e.exercice_id	= '".$this->id."' ";
@@ -749,11 +749,11 @@ class Exercise
         $TBL_EXERCICE_QUESTION = Database::get_course_table(TABLE_QUIZ_TEST_QUESTION);
         $TBL_QUESTIONS = Database::get_course_table(TABLE_QUIZ_QUESTION);
         $sql = "SELECT count(q.id) as count
-                FROM $TBL_EXERCICE_QUESTION e 
+                FROM $TBL_EXERCICE_QUESTION e
                 INNER JOIN $TBL_QUESTIONS q
                 ON (e.question_id = q.id AND e.c_id = q.c_id)
-                WHERE 
-                    e.c_id = {$this->course_id} AND 
+                WHERE
+                    e.c_id = {$this->course_id} AND
                     e.exercice_id = ".$this->id;
         $result = Database::query($sql);
 
@@ -780,11 +780,11 @@ class Exercise
 
         // Getting question list from the order (question list drag n drop interface ).
         $sql = "SELECT e.question_id
-                FROM $exerciseQuestionTable e 
+                FROM $exerciseQuestionTable e
                 INNER JOIN $questionTable q
                 ON (e.question_id= q.id AND e.c_id = q.c_id)
-                WHERE 
-                    e.c_id = {$this->course_id} AND 
+                WHERE
+                    e.c_id = {$this->course_id} AND
                     e.exercice_id = '".$this->id."'
                 ORDER BY q.question";
         $result = Database::query($sql);
@@ -1138,11 +1138,11 @@ class Exercise
         }
 
         $sql = "SELECT e.question_id
-                FROM $quizRelQuestion e 
+                FROM $quizRelQuestion e
                 INNER JOIN $question q
                 ON (e.question_id= q.id AND e.c_id = q.c_id)
-                WHERE 
-                    e.c_id = {$this->course_id} AND 
+                WHERE
+                    e.c_id = {$this->course_id} AND
                     e.exercice_id = '".Database::escape_string($this->id)."'
                     $randomLimit ";
         $result = Database::query($sql);
@@ -1187,12 +1187,12 @@ class Exercise
         $TBL_EXERCICE_QUESTION = Database::get_course_table(TABLE_QUIZ_TEST_QUESTION);
         $TBL_QUESTIONS = Database::get_course_table(TABLE_QUIZ_QUESTION);
         $sql = "SELECT q.id
-                FROM $TBL_EXERCICE_QUESTION e 
+                FROM $TBL_EXERCICE_QUESTION e
                 INNER JOIN $TBL_QUESTIONS q
                 ON (e.question_id = q.id AND e.c_id = q.c_id)
-                WHERE 
+                WHERE
                     q.id = $questionId AND
-                    e.c_id = {$this->course_id} AND 
+                    e.c_id = {$this->course_id} AND
                     e.exercice_id = ".$this->id;
 
         $result = Database::query($sql);
@@ -1389,8 +1389,8 @@ class Exercise
 
             if (@move_uploaded_file($sound['tmp_name'], $audioPath.'/'.$this->sound)) {
                 $sql = "SELECT 1 FROM $TBL_DOCUMENT
-                        WHERE 
-                            c_id = ".$this->course_id." AND 
+                        WHERE
+                            c_id = ".$this->course_id." AND
                             path = '".str_replace($documentPath, '', $audioPath).'/'.$this->sound."'";
                 $result = Database::query($sql);
 
@@ -2569,10 +2569,10 @@ class Exercise
         if ($form->getSubmitValue('update_title_in_lps') == 1) {
             $courseId = api_get_course_int_id();
             $table = Database::get_course_table(TABLE_LP_ITEM);
-            $sql = "SELECT * FROM $table 
-                    WHERE 
-                        c_id = $courseId AND 
-                        item_type = 'quiz' AND 
+            $sql = "SELECT * FROM $table
+                    WHERE
+                        c_id = $courseId AND
+                        item_type = 'quiz' AND
                         path = '".$this->id."'
                     ";
             $result = Database::query($sql);
@@ -2580,7 +2580,7 @@ class Exercise
             if (!empty($items)) {
                 foreach ($items as $item) {
                     $itemId = $item['iid'];
-                    $sql = "UPDATE $table SET title = '".$this->title."'                             
+                    $sql = "UPDATE $table SET title = '".$this->title."'
                             WHERE iid = $itemId AND c_id = $courseId ";
                     Database::query($sql);
                 }
@@ -2731,7 +2731,7 @@ class Exercise
             $course_id = api_get_course_id();
             $tbl_se_ref = Database::get_main_table(TABLE_MAIN_SEARCH_ENGINE_REF);
             $sql = 'SELECT * FROM %s
-                    WHERE course_code=\'%s\' AND tool_id=\'%s\' AND ref_id_high_level=%s AND ref_id_second_level IS NULL 
+                    WHERE course_code=\'%s\' AND tool_id=\'%s\' AND ref_id_high_level=%s AND ref_id_second_level IS NULL
                     LIMIT 1';
             $sql = sprintf($sql, $tbl_se_ref, $course_id, TOOL_QUIZ, $this->id);
             $res = Database::query($sql);
@@ -2754,8 +2754,8 @@ class Exercise
                     }
                 }
             }
-            $sql = 'DELETE FROM %s 
-                    WHERE course_code=\'%s\' AND tool_id=\'%s\' AND ref_id_high_level=%s AND ref_id_second_level IS NULL 
+            $sql = 'DELETE FROM %s
+                    WHERE course_code=\'%s\' AND tool_id=\'%s\' AND ref_id_high_level=%s AND ref_id_second_level IS NULL
                     LIMIT 1';
             $sql = sprintf($sql, $tbl_se_ref, $course_id, TOOL_QUIZ, $this->id);
             Database::query($sql);
@@ -2833,9 +2833,9 @@ class Exercise
 
         // delete TRACK_E_EXERCISES table
         $sql = "DELETE FROM $table_track_e_exercises
-                WHERE 
-                  c_id = ".api_get_course_int_id()." AND 
-                  exe_exo_id = ".$this->id." $sql_where AND 
+                WHERE
+                  c_id = ".api_get_course_int_id()." AND
+                  exe_exo_id = ".$this->id." $sql_where AND
                   session_id = ".$sessionId;
         Database::query($sql);
 
@@ -3211,7 +3211,7 @@ class Exercise
                         send_form();
                     }
                 });
-                
+
                 $('#clock_warning').dialog('open');
                 $('#counter_to_redirect').epiclock({
                     mode: $.epiclock.modes.countdown,
@@ -3382,7 +3382,8 @@ class Exercise
             $choiceDegreeCertainty = isset($choiceTmp['choiceDegreeCertainty']) ? $choiceTmp['choiceDegreeCertainty'] : '';
         }
 
-        if ($answerType == FREE_ANSWER ||
+        if ($answerType == BLOCKLY_QUESTION ||
+            $answerType == FREE_ANSWER ||
             $answerType == ORAL_EXPRESSION ||
             $answerType == CALCULATED_ANSWER ||
             $answerType == ANNOTATION
@@ -3535,9 +3536,9 @@ class Exercise
                     if ($from_database) {
                         $choice = [];
                         $choiceDegreeCertainty = [];
-                        $sql = "SELECT answer 
+                        $sql = "SELECT answer
                             FROM $TBL_TRACK_ATTEMPT
-                            WHERE 
+                            WHERE
                             exe_id = $exeId AND question_id = $questionId";
 
                         $result = Database::query($sql);
@@ -4112,8 +4113,8 @@ class Exercise
                 case FREE_ANSWER:
                     if ($from_database) {
                         $sql = "SELECT answer, marks FROM $TBL_TRACK_ATTEMPT
-                                 WHERE 
-                                    exe_id = $exeId AND 
+                                 WHERE
+                                    exe_id = $exeId AND
                                     question_id= ".$questionId;
                         $result = Database::query($sql);
                         $data = Database::fetch_array($result);
@@ -4142,12 +4143,42 @@ class Exercise
                         }
                     }
                     break;
+                case BLOCKLY_QUESTION:
+                    if ($from_database) {
+                        $sql = "SELECT answer, marks FROM $TBL_TRACK_ATTEMPT
+                                 WHERE exe_id = $exeId AND
+                                    question_id= ".$questionId;
+                        $result = Database::query($sql);
+                        $data = Database::fetch_array($result);
+                        $choice = $data['answer'];
+                        $choice = str_replace('\r\n', '', $choice);
+                        $choice = stripslashes($choice);
+                        $questionScore = $data['marks'];
+                        if ($questionScore == -1) {
+                            $totalScore += 0;
+                        } else {
+                            $totalScore += $questionScore;
+                        }
+                        if ($questionScore == '') {
+                            $questionScore = 0;
+                        }
+                        $arrques = $questionName;
+                        $arrans = $choice;
+                    } else {
+                        $studentChoice = $choice;
+                        if ($studentChoice) {
+                            //Fixing negative puntation see #2193
+                            $questionScore = 0;
+                            $totalScore += 0;
+                        }
+                    }
+                    break;
                 case ORAL_EXPRESSION:
                     if ($from_database) {
-                        $query = "SELECT answer, marks 
+                        $query = "SELECT answer, marks
                                   FROM $TBL_TRACK_ATTEMPT
-                                  WHERE 
-                                        exe_id = $exeId AND 
+                                  WHERE
+                                        exe_id = $exeId AND
                                         question_id = $questionId
                                  ";
                         $resq = Database::query($query);
@@ -4573,8 +4604,8 @@ class Exercise
                 case ANNOTATION:
                     if ($from_database) {
                         $sql = "SELECT answer, marks FROM $TBL_TRACK_ATTEMPT
-                                WHERE 
-                                  exe_id = $exeId AND 
+                                WHERE
+                                  exe_id = $exeId AND
                                   question_id= ".$questionId;
                         $resq = Database::query($sql);
                         $data = Database::fetch_array($resq);
@@ -4695,6 +4726,15 @@ class Exercise
                             );
                         } elseif ($answerType == FREE_ANSWER) {
                             ExerciseShowFunctions::display_free_answer(
+                                $feedback_type,
+                                $choice,
+                                $exeId,
+                                $questionId,
+                                $questionScore,
+                                $results_disabled
+                            );
+                        } elseif ($answerType == BLOCKLY_QUESTION) {
+                            ExerciseShowFunctions::display_blockly_answer(
                                 $feedback_type,
                                 $choice,
                                 $exeId,
@@ -5085,6 +5125,16 @@ class Exercise
                             break;
                         case FREE_ANSWER:
                             echo ExerciseShowFunctions::display_free_answer(
+                                $feedback_type,
+                                $choice,
+                                $exeId,
+                                $questionId,
+                                $questionScore,
+                                $results_disabled
+                            );
+                            break;
+                        case BLOCKLY_QUESTION:
+                            echo ExerciseShowFunctions::display_blockly_answer(
                                 $feedback_type,
                                 $choice,
                                 $exeId,
@@ -5672,6 +5722,16 @@ class Exercise
                     }
                 }
             } elseif ($answerType == FREE_ANSWER) {
+                $answer = $choice;
+                Event::saveQuestionAttempt(
+                    $questionScore,
+                    $answer,
+                    $quesId,
+                    $exeId,
+                    0,
+                    $this->id
+                );
+            } elseif ($answerType == BLOCKLY_QUESTION) {
                 $answer = $choice;
                 Event::saveQuestionAttempt(
                     $questionScore,
@@ -6334,9 +6394,9 @@ class Exercise
     {
         $TBL_LP_ITEM = Database::get_course_table(TABLE_LP_ITEM);
         $sql = "SELECT max_score FROM $TBL_LP_ITEM
-                WHERE 
-                    c_id = {$this->course_id} AND 
-                    item_type = '".TOOL_QUIZ."' AND 
+                WHERE
+                    c_id = {$this->course_id} AND
+                    item_type = '".TOOL_QUIZ."' AND
                     path = '{$this->id}'";
         $result = Database::query($sql);
         if (Database::num_rows($result) > 0) {
@@ -6679,8 +6739,8 @@ class Exercise
         if (empty($exeId)) {
             return false;
         }
-        $sql = "UPDATE $table 
-                SET questions_to_check = '' 
+        $sql = "UPDATE $table
+                SET questions_to_check = ''
                 WHERE exe_id = $exeId ";
         Database::query($sql);
 
@@ -6704,8 +6764,8 @@ class Exercise
         $questionListToString = Database::escape_string($questionListToString);
 
         $table = Database::get_main_table(TABLE_STATISTIC_TRACK_E_EXERCISES);
-        $sql = "UPDATE $table 
-                SET questions_to_check = '$questionListToString' 
+        $sql = "UPDATE $table
+                SET questions_to_check = '$questionListToString'
                 WHERE exe_id = $exeId";
         Database::query($sql);
 
@@ -6726,8 +6786,8 @@ class Exercise
         if ($exercise_info) {
             if (empty($exercise_info['questions_to_check'])) {
                 if ($action == 'add') {
-                    $sql = "UPDATE $track_exercises 
-                            SET questions_to_check = '$question_id' 
+                    $sql = "UPDATE $track_exercises
+                            SET questions_to_check = '$question_id'
                             WHERE exe_id = $exe_id ";
                     Database::query($sql);
                 }
@@ -6764,8 +6824,8 @@ class Exercise
                     }
                 }
                 $value = Database::escape_string($remind_list_string);
-                $sql = "UPDATE $track_exercises 
-                        SET questions_to_check = '$value' 
+                $sql = "UPDATE $track_exercises
+                        SET questions_to_check = '$value'
                         WHERE exe_id = $exe_id ";
                 Database::query($sql);
             }
@@ -7929,7 +7989,7 @@ class Exercise
     public function cleanCourseLaunchSettings()
     {
         $table = Database::get_course_table(TABLE_QUIZ_TEST);
-        $sql = "UPDATE $table SET autolaunch = 0  
+        $sql = "UPDATE $table SET autolaunch = 0
                 WHERE c_id = ".$this->course_id." AND session_id = ".$this->sessionId;
         Database::query($sql);
     }
@@ -8050,7 +8110,7 @@ class Exercise
                 $lpId = $lpId['lp_id'];
             }
 
-            $sql = "SELECT * 
+            $sql = "SELECT *
                         FROM $tblStats
                         WHERE
                             exe_exo_id = $exerciseId AND
@@ -8327,7 +8387,7 @@ class Exercise
             $answer = $item['answer'];
             $answer_type = $item['answer_type'];
 
-            if (!empty($question) && !empty($answer) && $answer_type == FREE_ANSWER) {
+            if (!empty($question) && !empty($answer) && ($answer_type == FREE_ANSWER || $answerType == BLOCKLY_QUESTION)) {
                 $open_question_list .=
                     '<tr>'
                     .'<td width="220" valign="top" bgcolor="#E5EDF8">&nbsp;&nbsp;'.get_lang('Question').'</td>'
