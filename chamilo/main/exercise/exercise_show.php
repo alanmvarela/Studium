@@ -425,6 +425,7 @@ foreach ($questionList as $questionId) {
         case DRAGGABLE:
         case READING_COMPREHENSION:
         case MATCHING_DRAGGABLE:
+        case BLOCKLY_QUESTION:
             $question_result = $objExercise->manage_answer(
                 $id,
                 $questionId,
@@ -492,7 +493,7 @@ foreach ($questionList as $questionId) {
                                     $(function() {
                                         new HotspotQuestion({
                                             questionId: $questionId,
-                                            exerciseId: {$objExercise->id},                                            
+                                            exerciseId: {$objExercise->id},
                                             exeId: $id,
                                             selector: '#hotspot-solution-$questionId-$id',
                                             for: 'solution',
@@ -646,7 +647,7 @@ foreach ($questionList as $questionId) {
                 }
 
                 //showing the score
-                $queryfree = "SELECT marks from ".$TBL_TRACK_ATTEMPT." 
+                $queryfree = "SELECT marks from ".$TBL_TRACK_ATTEMPT."
                               WHERE exe_id = ".intval($id)." AND question_id= ".intval($questionId);
                 $resfree = Database::query($queryfree);
                 $questionScore = Database::result($resfree, 0, "marks");
@@ -731,7 +732,7 @@ foreach ($questionList as $questionId) {
         if ($isFeedbackAllowed && $action != 'export') {
             $name = 'fckdiv'.$questionId;
             $marksname = 'marksName'.$questionId;
-            if (in_array($answerType, [FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
+            if (in_array($answerType, [BLOCKLY_QUESTION, FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
                 $url_name = get_lang('EditCommentsAndMarks');
             } else {
                 $url_name = get_lang('AddComments');
@@ -931,7 +932,7 @@ foreach ($questionList as $questionId) {
         }
     }
 
-    if (in_array($objQuestionTmp->type, [FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
+    if (in_array($objQuestionTmp->type, [BLOCKLY_QUESTION, FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
         $scoreToReview = [
             'score' => $my_total_score,
             'comments' => isset($comnt) ? $comnt : null,
