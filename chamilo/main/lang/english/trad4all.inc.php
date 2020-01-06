@@ -2,7 +2,7 @@
 /*
 for more information: see languages.txt in the lang folder.
 */
-$BlocklyQuestion = "Blockly question";
+$BlocklyQuestion = "Blockly-Games Exercise";
 $OpenBadgesBannerText = "You can generate badges for the skills learnt by your users, to give them recognition for their effort, through which they will be able to show off their acquired skills and competencies with icons that will be shown on their user profile. For more information on OpenBadges, check <a href='http://openbadges.org'>http://openbadges.org/</a>.";
 $OpenBadgesIntroduction = "You can now design skills learning badges for learning through your courses on this virtual campus.";
 $DesignANewBadgeComment = "Design a new badge, download it from the design tool and upload it on the platform.";
