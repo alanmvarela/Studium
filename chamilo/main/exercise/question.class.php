@@ -96,7 +96,7 @@ abstract class Question
         $this->parent_id = 0;
         // See BT#12611
         $this->questionTypeWithFeedback = [
-            BLOCKLY_QUESTION
+            BLOCKLY_QUESTION,
             MATCHING,
             MATCHING_DRAGGABLE,
             DRAGGABLE,
