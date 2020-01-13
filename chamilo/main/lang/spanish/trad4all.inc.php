@@ -3,6 +3,15 @@
 for more information: see languages.txt in the lang folder.
 */
 $BlocklyQuestion = "Ejercicio de Blockly-Games";
+$BlocklySelectedGame = "Juego seleccionado de Blockly-Games";
+$BlocklyPuzzle = "Rompecabezas";
+$BlocklyMaze = "Laberinto";
+$BlocklyBird = "Pájaro";
+$BlocklyTurtle = "Tortuga";
+$BlocklyMovie = "Película";
+$BlocklyMusic = "Música";
+$BlocklyPondTutor = "Tutor del Estanque";
+$BlocklyPond = "Estanque";
 $OpenBadgesBannerText = "Puede generar insignias para reconocer las habilidades aprendidas de sus usuarios, dar un reconocimiento por su logro, con lo cual ellos podrán mostrar sus capacidades y competencias adquiridas a través de emblemas, que serán visualizadas en su perfil de usuario. Para más información sobre los Open Badges en <a href=\"http://openbadges.org\">http://openbadges.org/</a>.";
 $OpenBadgesIntroduction = "Ahora puede establecer reconocimiento de habilidades por aprender en cualquier curso de este campus virtual.";
 $DesignANewBadgeComment = "Diseña una nueva insignia, descárgala y súbela en la plataforma.";
