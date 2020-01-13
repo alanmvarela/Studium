@@ -30,6 +30,10 @@ class BlocklyQuestion extends Question
      */
     public function createAnswersForm($form)
     {
+        // Blockly-Games
+        $blockly_default_games = self::getBlocklyDefaultGamesList();
+        $form->addSelect('blockly_selected_game', get_lang('BlocklySelectedGame'), $blockly_default_games);
+
         $form->addElement('text', 'weighting', get_lang('Weighting'));
         global $text;
         // setting the save button here and not in the question class.php
@@ -48,6 +52,7 @@ class BlocklyQuestion extends Question
      */
     public function processAnswersCreation($form, $exercise)
     {
+        $this->extra = $form->getSubmitValue('blockly_selected_game');
         $this->weighting = $form->getSubmitValue('weighting');
         $this->save($exercise);
     }
@@ -66,4 +71,25 @@ class BlocklyQuestion extends Question
 
         return $header;
     }
+
+    /**
+     * Devuelve un arreglo con los nombres de los juegos disponibles en
+     * Blockly-Games.
+     */
+    public static function getBlocklyDefaultGamesList()
+    {
+      $select_blockly_game = [
+          1 => get_lang('BlocklyPuzzle'),
+          2 => get_lang('BlocklyMaze'),
+          3 => get_lang('BlocklyBird'),
+          4 => get_lang('BlocklyTurtle'),
+          5 => get_lang('BlocklyMovie'),
+          6 => get_lang('BlocklyMusic'),
+          7 => get_lang('BlocklyPondTutor'),
+          8 => get_lang('BlocklyPond')
+      ];
+
+      return $select_blockly_game;
+    }
+
 }
