@@ -276,6 +276,18 @@ abstract class Question
     }
 
     /**
+     * returns the question extra.
+     *
+     * @author Alan Varela
+     *
+     * @return string - question extra
+     */
+    public function selectExtra()
+    {
+        return $this->extra;
+    }
+
+    /**
      * returns the question position.
      *
      * @author Olivier Brouckaert
