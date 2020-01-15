@@ -15,6 +15,21 @@ class BlocklyQuestion extends Question
     public static $typePicture = 'free_answer.png';
     public static $explanationLangVar = 'BlocklyQuestion';
 
+    // $blockly_url contiene la URL a la version de blockly utilizada por studium.
+    public static $blockly_url = 'http://blockly-studium';
+
+    // $blockly_games_url contiene la parte de la url de blockly-games correpondiente a cada juego disponible.
+    public static $blockly_games_url = [
+      1 => 'puzzle',
+      2 => 'maze',
+      3 => 'bird',
+      4 => 'turtle',
+      5 => 'movie',
+      6 => 'music',
+      7 => 'pond-tutor',
+      8 => 'pond',
+    ];
+
     /**
      * Constructor.
      */
@@ -30,10 +45,8 @@ class BlocklyQuestion extends Question
      */
     public function createAnswersForm($form)
     {
-        // Blockly-Games
         $blockly_default_games = self::getBlocklyDefaultGamesList();
         $form->addSelect('blockly_selected_game', get_lang('BlocklySelectedGame'), $blockly_default_games);
-
         $form->addElement('text', 'weighting', get_lang('Weighting'));
         global $text;
         // setting the save button here and not in the question class.php
@@ -74,22 +87,28 @@ class BlocklyQuestion extends Question
 
     /**
      * Devuelve un arreglo con los nombres de los juegos disponibles en
-     * Blockly-Games.
+     * Blockly-Games segun el lenguaje de la plataforma.
      */
     public static function getBlocklyDefaultGamesList()
     {
-      $select_blockly_game = [
-          1 => get_lang('BlocklyPuzzle'),
-          2 => get_lang('BlocklyMaze'),
-          3 => get_lang('BlocklyBird'),
-          4 => get_lang('BlocklyTurtle'),
-          5 => get_lang('BlocklyMovie'),
-          6 => get_lang('BlocklyMusic'),
-          7 => get_lang('BlocklyPondTutor'),
-          8 => get_lang('BlocklyPond')
-      ];
+      $select_blockly_game = [];
+
+      foreach (SELF::$blockly_games_url as $index => $value){
+        $select_blockly_game[$index] = get_lang(str_replace('-','',$value));
+      }
 
       return $select_blockly_game;
+    }
+
+    /**
+     * Genera y devuelve la URL al juego de Blockly-Games pasado por parametro y segun el lenguaje de la plataforma.
+     *
+     * @param int $game_id
+     *
+     */
+    public function getGameURL($game_id)
+    {
+      return SELF::$blockly_url.sprintf(get_lang('BlocklyUrl'), SELF::$blockly_games_url[$game_id]);
     }
 
 }
