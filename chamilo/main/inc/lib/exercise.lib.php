@@ -186,6 +186,22 @@ class ExerciseLib
                 );
                 $form->setDefaults(["choice[".$questionId."]" => $fck_content]);
                 $s .= $form->returnForm();
+            } elseif ($answerType == BLOCKLY_QUESTION) {
+                //Obtencion del campo extra que contiene el id del tipo de juego de Blockly seleccionado.
+                $blockly_game_id = $objQuestionTmp->selectExtra();
+
+                //Validación gunta ya fue respondida previamente y se setea la repuesta con la respuesta.
+                $fck_content = isset($user_choice[0]) && !empty($user_choice[0]['answer']) ? $user_choice[0]['answer'] : null;
+
+                //Definición del Formulario de Respuesta de la Pregunta.
+                $form = new FormValidator('blockly_question_'.$questionId);
+
+                $form->addHtml('<div id='.'blockly_game_url_'.$questionId.'>');
+                $form->addHtml('<a href='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</a>');
+                $form->addHtml('</div>');
+                $form->setDefaults(["choice[".$questionId."]" => $fck_content]);
+
+                $s .= $form->returnForm();
             } elseif ($answerType == ORAL_EXPRESSION) {
                 // Add nanog
                 if (api_get_setting('enable_record_audio') === 'true') {
@@ -256,38 +272,38 @@ class ExerciseLib
                 $header = Display::tag('th', get_lang('Options'), ['width' => '50%']);
                 echo "
                 <script>
-                    function RadioValidator(question_id, answer_id) 
+                    function RadioValidator(question_id, answer_id)
                     {
                         var ShowAlert = '';
                         var typeRadioB = '';
                         var AllFormElements = window.document.getElementById('exercise_form').elements;
-                    
+
                         for (i = 0; i < AllFormElements.length; i++) {
                             if (AllFormElements[i].type == 'radio') {
                                 var ThisRadio = AllFormElements[i].name;
                                 var ThisChecked = 'No';
                                 var AllRadioOptions = document.getElementsByName(ThisRadio);
-                              
+
                                 for (x = 0; x < AllRadioOptions.length; x++) {
                                      if (AllRadioOptions[x].checked && ThisChecked == 'No') {
                                          ThisChecked = 'Yes';
                                          break;
-                                     } 
-                                }  
-                              
-                                var AlreadySearched = ShowAlert.indexOf(ThisRadio);                                
-                                if (ThisChecked == 'No' && AlreadySearched == -1) { 
+                                     }
+                                }
+
+                                var AlreadySearched = ShowAlert.indexOf(ThisRadio);
+                                if (ThisChecked == 'No' && AlreadySearched == -1) {
                                     ShowAlert = ShowAlert + ThisRadio;
-                                }     
+                                }
                             }
                         }
                         if (ShowAlert != '') {
-                    
+
                         } else {
                             $('.question-validate-btn').removeAttr('disabled');
                         }
                     }
-                    
+
                     function handleRadioRow(event, question_id, answer_id) {
                         var t = event.target;
                         if (t && t.tagName == 'INPUT')
@@ -299,39 +315,39 @@ class ExerciseLib
                         r.click();
                         RadioValidator(question_id, answer_id);
                     }
-                    
+
                     $(function() {
                         var ShowAlert = '';
                         var typeRadioB = '';
                         var question_id = $('input[name=question_id]').val();
                         var AllFormElements = window.document.getElementById('exercise_form').elements;
-                    
+
                         for (i = 0; i < AllFormElements.length; i++) {
                             if (AllFormElements[i].type == 'radio') {
                                 var ThisRadio = AllFormElements[i].name;
                                 var ThisChecked = 'No';
                                 var AllRadioOptions = document.getElementsByName(ThisRadio);
-                                
+
                                 for (x = 0; x < AllRadioOptions.length; x++) {
                                     if (AllRadioOptions[x].checked && ThisChecked == 'No') {
                                         ThisChecked = \"Yes\";
                                         break;
                                     }
                                 }
-                                
-                                var AlreadySearched = ShowAlert.indexOf(ThisRadio);                                
-                                if (ThisChecked == 'No' && AlreadySearched == -1) { 
+
+                                var AlreadySearched = ShowAlert.indexOf(ThisRadio);
+                                if (ThisChecked == 'No' && AlreadySearched == -1) {
                                     ShowAlert = ShowAlert + ThisRadio;
                                 }
                             }
                         }
-                        
+
                         if (ShowAlert != '') {
                              $('.question-validate-btn').attr('disabled', 'disabled');
                         } else {
                             $('.question-validate-btn').removeAttr('disabled');
                         }
-                    
+
                     });
                 </script>";
 
@@ -404,7 +420,7 @@ class ExerciseLib
                         $header2 .= Display::tag(
                             'td',
                             nl2br($descriptionList[$counter2]),
-                            ['style' => 'background-color: #EFEFFC; color: black; width: 110px; text-align:center; 
+                            ['style' => 'background-color: #EFEFFC; color: black; width: 110px; text-align:center;
                                 vertical-align: top; padding:5px; '.$color_border2]);
                         $counter2++;
                     }
@@ -496,16 +512,16 @@ class ExerciseLib
                         if ($answerType == UNIQUE_ANSWER_IMAGE) {
                             if ($show_comment) {
                                 if (empty($comment)) {
-                                    $s .= '<div id="answer'.$questionId.$numAnswer.'" 
+                                    $s .= '<div id="answer'.$questionId.$numAnswer.'"
                                             class="exercise-unique-answer-image" style="text-align: center">';
                                 } else {
-                                    $s .= '<div id="answer'.$questionId.$numAnswer.'" 
-                                            class="exercise-unique-answer-image col-xs-6 col-sm-12" 
+                                    $s .= '<div id="answer'.$questionId.$numAnswer.'"
+                                            class="exercise-unique-answer-image col-xs-6 col-sm-12"
                                             style="text-align: center">';
                                 }
                             } else {
-                                $s .= '<div id="answer'.$questionId.$numAnswer.'" 
-                                        class="exercise-unique-answer-image col-xs-6 col-md-3" 
+                                $s .= '<div id="answer'.$questionId.$numAnswer.'"
+                                        class="exercise-unique-answer-image col-xs-6 col-md-3"
                                         style="text-align: center">';
                             }
                         }
@@ -1060,8 +1076,8 @@ class ExerciseLib
                             // Id of select is # question + # of option
                             $s .= '<td width="10%" valign="top" align="center">
                                 <div class="select-matching">
-                                <select 
-                                    id="choice_id_'.$current_item.'_'.$lines_count.'" 
+                                <select
+                                    id="choice_id_'.$current_item.'_'.$lines_count.'"
                                     name="choice['.$questionId.']['.$numAnswer.']">';
 
                             // fills the list-box
@@ -1213,9 +1229,9 @@ class ExerciseLib
                             $s .= <<<HTML
                             <tr>
                                 <td width="45%">
-                                    <div id="window_{$windowId}" 
+                                    <div id="window_{$windowId}"
                                         class="window window_left_question window{$questionId}_question">
-                                        <strong>$lines_count.</strong> 
+                                        <strong>$lines_count.</strong>
                                         $answer
                                     </div>
                                 </td>
@@ -1286,7 +1302,7 @@ HTML;
                             if (isset($select_items[$lines_count])) {
                                 $s .= <<<HTML
                                 <div id="window_{$windowId}_answer" class="window window_right_question">
-                                    <strong>{$select_items[$lines_count]['letter']}.</strong> 
+                                    <strong>{$select_items[$lines_count]['letter']}.</strong>
                                     {$select_items[$lines_count]['answer']}
                                 </div>
 HTML;
@@ -1446,7 +1462,7 @@ HTML;
                     echo "
                         <div class=\"row\">
                             <div class=\"col-sm-9\">
-                                <div id=\"hotspot-preview-$questionId\"></div>                                
+                                <div id=\"hotspot-preview-$questionId\"></div>
                             </div>
                             <div class=\"col-sm-3\">
                                 $answerList
@@ -1568,15 +1584,15 @@ HOTSPOT;
                                         <div class="btn-group" data-toggle="buttons">
                                             <label class="btn btn-default active"
                                                 aria-label="'.get_lang('AddAnnotationPath').'">
-                                                <input 
-                                                    type="radio" value="0" 
+                                                <input
+                                                    type="radio" value="0"
                                                     name="'.$questionId.'-options" autocomplete="off" checked>
                                                 <span class="fa fa-pencil" aria-hidden="true"></span>
                                             </label>
                                             <label class="btn btn-default"
                                                 aria-label="'.get_lang('AddAnnotationText').'">
-                                                <input 
-                                                    type="radio" value="1" 
+                                                <input
+                                                    type="radio" value="1"
                                                     name="'.$questionId.'-options" autocomplete="off">
                                                 <span class="fa fa-font fa-fw" aria-hidden="true"></span>
                                             </label>
@@ -2003,12 +2019,12 @@ HOTSPOT;
         $sql_inner_join_tbl_track_exercices = "
         (
             SELECT DISTINCT ttte.*, if(tr.exe_id,1, 0) as revised
-            FROM $TBL_TRACK_EXERCICES ttte 
+            FROM $TBL_TRACK_EXERCICES ttte
             LEFT JOIN $TBL_TRACK_ATTEMPT_RECORDING tr
             ON (ttte.exe_id = tr.exe_id)
             WHERE
                 c_id = $course_id AND
-                exe_exo_id = $exercise_id 
+                exe_exo_id = $exercise_id
                 $sessionCondition
         )";
 
@@ -2152,7 +2168,7 @@ HOTSPOT;
                 ON (user.user_id = exe_user_id)
                 WHERE
                     te.c_id = $course_id $session_id_and AND
-                    ce.active <> -1 AND 
+                    ce.active <> -1 AND
                     ce.c_id = $course_id
                     $exercise_where
                     $extra_where_conditions
@@ -3032,7 +3048,7 @@ HOTSPOT;
             return '';
         }
         $js = <<<EOT
-        
+
         function updateSelect(element) {
             var spanTag = element.parent().find('span.filter-option');
             var value = element.val();
@@ -3041,7 +3057,7 @@ HOTSPOT;
             spanTag.removeClass('$cssListToString');
             spanTag.addClass(optionClass);
         }
-        
+
         $(function() {
             // Loading values
             $('.exercise_mark_select').on('loaded.bs.select', function() {
@@ -4682,7 +4698,7 @@ EOT;
                     ];
                 }
 
-                if (in_array($objQuestionTmp->type, [FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
+                if (in_array($objQuestionTmp->type, [BLOCKLY_QUESTION, FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
                     $reviewScore = [
                         'score' => $my_total_score,
                         'comments' => Event::get_comments($exeId, $questionId),
