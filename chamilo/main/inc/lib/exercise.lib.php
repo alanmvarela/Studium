@@ -187,19 +187,22 @@ class ExerciseLib
                 $form->setDefaults(["choice[".$questionId."]" => $fck_content]);
                 $s .= $form->returnForm();
             } elseif ($answerType == BLOCKLY_QUESTION) {
-                //Obtencion del campo extra que contiene el id del tipo de juego de Blockly seleccionado.
+                //Obtención del campo extra que contiene el id del tipo de juego de Blockly seleccionado.
                 $blockly_game_id = $objQuestionTmp->selectExtra();
 
-                //Validación gunta ya fue respondida previamente y se setea la repuesta con la respuesta.
+                //Validación pregunta ya fue respondida previamente y se setea la repuesta con el valor almacenado en la base de datos.
                 $fck_content = isset($user_choice[0]) && !empty($user_choice[0]['answer']) ? $user_choice[0]['answer'] : null;
 
                 //Definición del Formulario de Respuesta de la Pregunta.
                 $form = new FormValidator('blockly_question_'.$questionId);
 
                 $form->addHtml('<div id='.'blockly_game_url_'.$questionId.'>');
-                $form->addHtml('<a href='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</a>');
+                $form->addHtml('<button type="button" name="blockly_game_url" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</button>');
                 $form->addHtml('</div>');
-                $form->setDefaults(["choice[".$questionId."]" => $fck_content]);
+
+                $form->addHtml('<div id="cke_choice['.$questionId.']" >');
+                $form->addHidden("choice[".$questionId."]", $fck_content);
+                $form->addHtml('</div>');
 
                 $s .= $form->returnForm();
             } elseif ($answerType == ORAL_EXPRESSION) {
