@@ -14,7 +14,8 @@ $music = "Música";
 $pondtutor = "Tutor del Estanque";
 $pond = "Estanque";
 $BlocklyUrl = "/%s.html?lang=es";
-$BlocklyUrlTitle = "Haga click aqui para comenzar el juego.";
+$BlocklyUrlTitle = "Haga click aqui para ir al el juego.";
+$BlocklySavedMessage = "Esta pregunta ya tiene una respuesta guardada. Si desea modificarla vuelva a hacer click en el boton para ir al juego. Sino continue con el ejercicio.";
 // Constantes de Blockly-Games - Fin
 $OpenBadgesBannerText = "Puede generar insignias para reconocer las habilidades aprendidas de sus usuarios, dar un reconocimiento por su logro, con lo cual ellos podrán mostrar sus capacidades y competencias adquiridas a través de emblemas, que serán visualizadas en su perfil de usuario. Para más información sobre los Open Badges en <a href=\"http://openbadges.org\">http://openbadges.org/</a>.";
 $OpenBadgesIntroduction = "Ahora puede establecer reconocimiento de habilidades por aprender en cualquier curso de este campus virtual.";
