@@ -1184,44 +1184,82 @@ if (!empty($error)) {
                 save_now(questionId, urlExtra);
             });
 
-            $(\'button[name="blockly_game_url"]\').on(\'touchstart click\', function (e) {
+            $(\'button[name="blockly_game_button"]\').on(\'touchstart click\', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                var
-                    $this = $(this);
+                var $this = $(this),
                     question_id = parseInt($this.data(\'question\')) || 0;
 
-                    //1. Normal choice inputs
-                    var my_choice = $(\'*[name*="choice[\'+question_id+\']"]\').serialize();
+                //Normal choice inputs for Blockly
+                var my_choice_value = $(\'*[name*="choice[\'+question_id+\']"]\').val();
 
-                    //2. Reminder checkbox
-                    var remind_list = $(\'*[name*="remind_list"]\').serialize();
+                //CREATES THE ATTEMPT FOR THE FIRST TIME
+                if (my_choice_value == "") {
 
-                    //3. Hotspots
-                    var hotspot = $(\'*[name*="hotspot[\'+question_id+\']"]\').serialize();
+                  //1.Normal choice inputs
+                  var my_choice = $(\'*[name*="choice[\'+question_id+\']"]\').serialize();
 
-                    //4. choice for degree of certainty
-                    var my_choiceDc = $(\'*[name*="choiceDegreeCertainty[\'+question_id+\']"]\').serialize();
+                  //2. Reminder checkbox
+                  var remind_list = $(\'*[name*="remind_list"]\').serialize();
 
-                    // Checking FCK
-                    if (question_id) {
-                        if (CKEDITOR.instances["choice["+question_id+"]"]) {
-                            var ckContent = CKEDITOR.instances["choice["+question_id+"]"].getData();
-                            my_choice = {};
-                            my_choice["choice["+question_id+"]"] = ckContent;
-                            my_choice = $.param(my_choice);
-                        }
-                    }
+                  //3. Hotspots
+                  var hotspot = $(\'*[name*="hotspot[\'+question_id+\']"]\').serialize();
 
-                    dataparam = "&'.$params.'&type=simple&question_id="+question_id;
-                    dataparam += "&"+my_choice+"&"+hotspot+"&"+remind_list+"&"+my_choiceDc;
-                    dataparam += "&reminder="+'.$reminder.'+"&current_question="+'.$current_question.'+"&remind_question_id="+'.$remind_question_id.';
-                    urlExtra = $this.data(\'url\') + dataparam;
+                  //4. choice for degree of certainty
+                  var my_choiceDc = $(\'*[name*="choiceDegreeCertainty[\'+question_id+\']"]\').serialize();
 
+                  // Checking FCK
+                  if (question_id) {
+                      if (CKEDITOR.instances["choice["+question_id+"]"]) {
+                          var ckContent = CKEDITOR.instances["choice["+question_id+"]"].getData();
+                          my_choice = {};
+                          my_choice["choice["+question_id+"]"] = ckContent;
+                          my_choice = $.param(my_choice);
+                      }
+                  }
 
+                  //GETS THE PARAMETERS RELATED TO THE QUESTION THAT WILL BE USED TO SAVE THE ATTEMPT FOR THE FIRST TIME
+                  dataparam = "&'.$params.'&type=simple&question_id="+question_id;
+                  dataparam += "&"+my_choice+"&"+hotspot+"&"+remind_list+"&"+my_choiceDc;
+
+                  $.ajax({
+                      type:"post",
+                      async: false,
+                      url: "'.api_get_path(WEB_AJAX_PATH).'exercise.ajax.php?'.api_get_cidreq().'&a=save_exercise_by_now",
+                      data: dataparam,
+                      success: function(return_value) {
+                        console.log(return_value);
+                      },
+                      error: function(return_value) {
+                        console.log(return_value);
+                      }
+                    });
+                }
+
+                //GETS THE PARAMETERS RELATED TO THE QUESTION TO SAVE THE ATTEMPT FROM BLOCKLY-GAMES.
+                blocklyparam = "&exe_id="+'.$exe_id.'+"&question_id="+ question_id;
+
+                //GETS THE PARAMETERS RELATED TO THE CURRENT CHAMILO SESSION TO SAVE THE ATTEMPT FROM BLOCKLY-GAME.
+                blocklyparam += "&user_id="+'.api_get_user_id().
+                                '+"&course_id="+'.api_get_course_int_id().
+                                '+"&session_id="+'.api_get_session_id().';
+
+                //GETS THE CURRENT URL TO ALLOW BLOCKLY-GAMES TO REDIRECT BACK TO THE ATTEMPT AFTER COMPLETION OF THE GAME.
+                currentUrl = window.location.href;
+                blocklyparam += "&currentUrl=" + encodeURIComponent(currentUrl);
+
+                //GETS THE STATUS OF THE BLOCKLY-GAMES GAME.
+                if( my_choice_value != "" ){
+                  blocklyparam += "#" + my_choice_value;
+                }
+
+                //REDIRECT TO BLOCKLY-GAMES.
+                urlExtra = $this.data(\'url\') + blocklyparam;
                 window.location = urlExtra;
+
             });
+
 
             $(\'button[name="validate_all"]\').on(\'touchstart click\', function (e) {
                 e.preventDefault();
@@ -1269,6 +1307,9 @@ if (!empty($error)) {
         }
 
         function save_now(question_id, url_extra, validate) {
+
+          //CHEQUEAR SI ES NECESARIO ESTO, SI LO ES TENEMOS Q REIMPLEMENTAR ESTE METODO PARA QUE REDIRIJA SINO ES PREGUNTA BLOCKLY
+          //if( $("blockly_game_button["+question_id+"]").lenght ){
             //1. Normal choice inputs
             var my_choice = $(\'*[name*="choice[\'+question_id+\']"]\').serialize();
 
@@ -1342,6 +1383,7 @@ if (!empty($error)) {
                         Display::return_icon('error.png', get_lang('Error'), [], ICON_SIZE_SMALL).'\');
                 }
             });
+          //}
         }
 
         function save_now_all(validate) {
