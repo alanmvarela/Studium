@@ -187,18 +187,25 @@ class ExerciseLib
                 $form->setDefaults(["choice[".$questionId."]" => $fck_content]);
                 $s .= $form->returnForm();
             } elseif ($answerType == BLOCKLY_QUESTION) {
-                //Obtención del campo extra que contiene el id del tipo de juego de Blockly seleccionado.
+
+                //GETS THE BLOCKLY-GAMES GAME TYPE.
                 $blockly_game_id = $objQuestionTmp->selectExtra();
 
-                //Validación pregunta ya fue respondida previamente y se setea la repuesta con el valor almacenado en la base de datos.
+                //GETS THE QUESTION ATTEMPT CURRENT STATUS.
                 $fck_content = isset($user_choice[0]) && !empty($user_choice[0]['answer']) ? $user_choice[0]['answer'] : null;
 
-                //Definición del Formulario de Respuesta de la Pregunta.
+                //SETS THE QUESTION ANSWER FORM.
                 $form = new FormValidator('blockly_question_'.$questionId);
 
                 $form->addHtml('<div id='.'blockly_game_url_'.$questionId.'>');
-                $form->addHtml('<button type="button" name="blockly_game_url" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</button>');
+                $form->addHtml('<button type="button" id="blockly_game_button['.$questionId.']" name="blockly_game_button" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</button>');
                 $form->addHtml('</div>');
+
+                if ($fck_content != null) {
+                $form->addHtml('<div id='.'blockly_game_saved_message'.$questionId.'>');
+                $form->addHtml('<label id="blockly_game_saved_message['.$questionId.']" name="blockly_game_saved_message">'.get_lang('BlocklySavedMessage').'</label>');
+                $form->addHtml('</div>');
+                }
 
                 $form->addHtml('<div id="cke_choice['.$questionId.']" >');
                 $form->addHidden("choice[".$questionId."]", $fck_content);
