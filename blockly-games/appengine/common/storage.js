@@ -25,9 +25,172 @@
 var BlocklyStorage = {};
 
 /**
+* Save blocks or JavaScript to Studium database.
+*
+* @author Alan Varela
+*/
+BlocklyStorage.link = function() {
+  var code = BlocklyInterface.getCode(),
+      soapBody = BlocklyStorage.getSoapWSSaveBlocklyAttemptBody(encodeURIComponent(code));
+  BlocklyStorage.soapRequest(soapBody, BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse);
+};
+
+/**
+ * Retrieve XML text from url and restores the current game status.
+ * @param {string} code Encoded XML obtained from href containing the saved status of a game.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.retrieveXml = function(code) {
+  BlocklyInterface.setCode(decodeURIComponent(code));
+};
+
+/**
+ * Bind the link function to the unload event.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.backupOnUnload = function() {
+  window.addEventListener('unload', BlocklyStorage.link, false);
+};
+
+/**
+ * Creates a SOAP request addresed to the Studium webservice.
+ *
+ * @param {string} soapBody contains the soap envelop body with the method and parameters to be used on the request.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.soapRequest = function( soapBody, callBackFunction ) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open('POST', 'http://studium/main/webservices/blockly-games.soap.php?wsdl', true);
+
+    // build SOAP request
+    var sr =
+        '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soapenv:Envelope ' +
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+            'xmlns:api="http://127.0.0.1/Integrics/Enswitch/API" ' +
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ' +
+            'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">' +
+            '<soapenv:Body>' +
+              soapBody +
+            '</soapenv:Body>' +
+        '</soapenv:Envelope>';
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4) {
+          callBackFunction(xmlhttp.status);
+        }
+    }
+    // Send the POST request
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.send(sr);
+}
+
+/**
+ * Returs the soap envelop body for the Studium xxx webservice method with all its parameters
+ *
+ * @param {string} code contains the status of the current BLOCKLY-GAMES.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.getSoapWSSaveBlocklyAttemptBody = function ( code ) {
+
+  var method = "WSSaveBlocklyAttempt",
+      soapBody =  '<' + method + ' soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
+                    '<blocklyAttempt>'+
+                      BlocklyStorage.getSoapParameters() +
+                      '<choice xsi:type="xsd:string">' + code + '</choice>' +
+                    '</blocklyAttempt>'+
+                  '</' + method + '>';
+  return soapBody;
+}
+
+/**
+ * Handles the response of the SOAP request invoquing WSSaveBlocklyAttempt method.
+ *
+ * @param {string} status contains the status code of the SOAP request.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse = function ( status ) {
+  if (status == 200) {
+      alert("El juego fue guardado con exito.");
+      window.location = decodeURIComponent(BlocklyStorage.getUrlParameter("currentUrl"));
+  } else {
+      alert("Hubo un error al guardar el juego.");
+  }
+}
+
+/**
+ * Returns all the parameters on the current window URL querystring formated to be included in a Studium SOAP request.
+ * choiche[d] parameter is ommited from the return string.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.getSoapParameters = function () {
+  var url = window.location.search,
+  //REMOVES LANGUAGE PARAMETERS AND ? CHARACTER FROM BLOCKLY-GAMES URL.
+      urlParameters = (url.substring(9, url.length)).split('&'),
+      currentParameter,
+      currentParameterName,
+      currentParameterValue,
+      i,
+      soapParameters = "";
+
+  for (i = 0; i < urlParameters.length; i++) {
+      currentParameter = urlParameters[i].split('=');
+      //REMOVES choiche[*] and currentUrl PARAMETERS FROM THE PARAMETERS LIST OBTAINED FROM BLOCKLY_GAMES URL.
+      currentParameterName = decodeURIComponent(currentParameter[0]).replace(/choice\[\d*\]/, 'choice');
+      if (currentParameter[0] != '' && currentParameterName != 'choice' && currentParameterName != 'currentUrl') {
+        currentParameterValue = decodeURIComponent(currentParameter[1]);
+        soapParameters = soapParameters + '<' + currentParameterName + ' xsi:type="xsd:string">' + currentParameterValue + '</' + currentParameterName + '>'
+      }
+  }
+
+  return soapParameters;
+}
+
+/**
+ * Returns a given parameter from the current page URL querystring.
+ * Return null if the parameter is not present.
+ * @param {string} searchParam Text of the seached parameter.
+ *
+ * @author Alan Varela
+ */
+BlocklyStorage.getUrlParameter = function (searchParam) {
+    var url = window.location.search,
+        urlParameters = (url.substring(1, url.length)).split('&'),
+        currentParameter,
+        i;
+
+    for (i = 0; i < urlParameters.length; i++) {
+        currentParameter = urlParameters[i].split('=');
+
+        if (currentParameter[0] === searchParam) {
+            return currentParameter[1] === undefined ? null : decodeURIComponent(currentParameter[1]);
+        }
+    }
+};
+
+/**
+ * Present a text message to the user.
+ * Designed to be overridden if an app has custom dialogs, or a butter bar.
+ * @param {string} message Text to alert.
+ */
+BlocklyStorage.alert = function(message) {
+  window.alert(message);
+};
+
+//ALL THE STORAGE METHODS FROM BLOCKLY-GAMES WHERE COMMENTED OUT AS THEY WORK WITH APPENGINE OR LOCALSTORAGE.
+
+/**
  * Backup code blocks or JavaScript to localStorage.
  * @private
  */
+/*
 BlocklyStorage.backupBlocks_ = function() {
   if ('localStorage' in window) {
     var code = BlocklyInterface.getCode();
@@ -36,17 +199,12 @@ BlocklyStorage.backupBlocks_ = function() {
     window.localStorage.setItem(url, code);
   }
 };
-
-/**
- * Bind the localStorage backup function to the unload event.
- */
-BlocklyStorage.backupOnUnload = function() {
-  window.addEventListener('unload', BlocklyStorage.backupBlocks_, false);
-};
+*/
 
 /**
  * Restore code blocks or JavaScript from localStorage.
  */
+/*
 BlocklyStorage.restoreBlocks = function() {
   var url = window.location.href.split('#')[0];
   if ('localStorage' in window && window.localStorage[url]) {
@@ -54,30 +212,15 @@ BlocklyStorage.restoreBlocks = function() {
     BlocklyInterface.setCode(code);
   }
 };
-
-/**
- * Save blocks or JavaScript to database and return a link containing the key.
- */
-BlocklyStorage.link = function() {
-  var code = BlocklyInterface.getCode();
-  BlocklyStorage.makeRequest('/storage', 'xml=' + encodeURIComponent(code),
-      BlocklyStorage.handleLinkResponse_);
-};
-
-/**
- * Retrieve XML text from database using given key.
- * @param {string} key Key to XML, obtained from href.
- */
-BlocklyStorage.retrieveXml = function(key) {
-  BlocklyStorage.makeRequest('/storage', 'key=' + encodeURIComponent(key),
-      BlocklyStorage.handleRetrieveXmlResponse_);
-};
+*/
 
 /**
  * Global reference to current AJAX requests.
  * @type Object.<string, XMLHttpRequest>
  */
+/*
 BlocklyStorage.xhrs_ = {};
+*/
 
 /**
  * Fire a new AJAX request.
@@ -89,6 +232,7 @@ BlocklyStorage.xhrs_ = {};
  *    unsuccessfully. Defaults to BlocklyStorage alert of request status.
  * @param {string=} [opt_method='POST'] The HTTP request method to use.
  */
+/*
 BlocklyStorage.makeRequest =
     function(url, data, opt_onSuccess, opt_onFailure, opt_method) {
   if (BlocklyStorage.xhrs_[url]) {
@@ -115,25 +259,20 @@ BlocklyStorage.makeRequest =
   }
   BlocklyStorage.xhrs_[url].send(data);
 };
+*/
 
 /**
  * Callback function for link AJAX call.
  * @param {string} responseText Response to request.
  * @private
  */
-BlocklyStorage.handleLinkResponse_ = function() {
-  var data = this.responseText.trim();
-  window.location.hash = data;
-  BlocklyStorage.alert(BlocklyStorage.LINK_ALERT.replace('%1',
-      window.location.href));
-  BlocklyStorage.monitorChanges_();
-};
-
+/*
 /**
  * Callback function for retrieve xml AJAX call.
  * @param {string} responseText Response to request.
  * @private
  */
+/*
 BlocklyStorage.handleRetrieveXmlResponse_ = function() {
   var data = this.responseText.trim();
   if (!data.length) {
@@ -144,6 +283,7 @@ BlocklyStorage.handleRetrieveXmlResponse_ = function() {
   }
   BlocklyStorage.monitorChanges_();
 };
+*/
 
 /**
  * Start monitoring the workspace.  If a change is made that changes the XML,
@@ -151,6 +291,7 @@ BlocklyStorage.handleRetrieveXmlResponse_ = function() {
  * change is detected.
  * @private
  */
+/*
 BlocklyStorage.monitorChanges_ = function() {
   var startCode = BlocklyInterface.getCode();
   function change() {
@@ -161,12 +302,4 @@ BlocklyStorage.monitorChanges_ = function() {
   }
   var bindData = BlocklyInterface.getWorkspace().addChangeListener(change);
 };
-
-/**
- * Present a text message to the user.
- * Designed to be overridden if an app has custom dialogs, or a butter bar.
- * @param {string} message Text to alert.
- */
-BlocklyStorage.alert = function(message) {
-  window.alert(message);
-};
+*/
