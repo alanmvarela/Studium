@@ -30,9 +30,19 @@ var BlocklyStorage = {};
 * @author Alan Varela
 */
 BlocklyStorage.link = function() {
-  var code = BlocklyInterface.getCode(),
-      soapBody = BlocklyStorage.getSoapWSSaveBlocklyAttemptBody(encodeURIComponent(code));
-  BlocklyStorage.soapRequest(soapBody, BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse);
+
+  var url = window.location.search,
+      urlParameters = (url.substring(9, url.length)).split('&');
+
+  //IF THERE ARE PARAMETERS ON THE URL THEN A STUDENT IS EXECUTING THE GAME. OTHERWISE A TEACHER IS CORRECTING THE GAME.
+  if (urlParameters.length > 1){
+    var code = BlocklyInterface.getCode(),
+        soapBody = BlocklyStorage.getSoapWSSaveBlocklyAttemptBody(encodeURIComponent(code));
+
+    BlocklyStorage.soapRequest(soapBody, BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse);
+  } else {
+    window.history.back();
+  }
 };
 
 /**
