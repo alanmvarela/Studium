@@ -189,7 +189,7 @@ class ExerciseLib
             } elseif ($answerType == BLOCKLY_QUESTION) {
 
                 //GETS THE BLOCKLY-GAMES GAME TYPE.
-                $blockly_game_id = $objQuestionTmp->selectExtra();
+                $blockly_game_type = $objQuestionTmp->selectExtra();
 
                 //GETS THE QUESTION ATTEMPT CURRENT STATUS.
                 $fck_content = isset($user_choice[0]) && !empty($user_choice[0]['answer']) ? $user_choice[0]['answer'] : null;
@@ -198,7 +198,7 @@ class ExerciseLib
                 $form = new FormValidator('blockly_question_'.$questionId);
 
                 $form->addHtml('<div id='.'blockly_game_url_'.$questionId.'>');
-                $form->addHtml('<button type="button" id="blockly_game_button['.$questionId.']" name="blockly_game_button" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_id).'>'.get_lang('BlocklyUrlTitle').'</button>');
+                $form->addHtml('<button type="button" id="blockly_game_button['.$questionId.']" name="blockly_game_button" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_type).'>'.get_lang('BlocklyUrlTitle').'</button>');
                 $form->addHtml('</div>');
 
                 if ($fck_content != null) {
