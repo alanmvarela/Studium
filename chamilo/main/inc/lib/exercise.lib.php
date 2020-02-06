@@ -198,12 +198,17 @@ class ExerciseLib
                 $form = new FormValidator('blockly_question_'.$questionId);
 
                 $form->addHtml('<div id='.'blockly_game_url_'.$questionId.'>');
-                $form->addHtml('<button type="button" id="blockly_game_button['.$questionId.']" name="blockly_game_button" data-question="'.$questionId.'" data-url='.BlocklyQuestion::getGameURL($blockly_game_type).'>'.get_lang('BlocklyUrlTitle').'</button>');
+                $form->addHtml('<button
+                                  type="button" id="blockly_game_button['.$questionId.']"
+                                  name="blockly_game_button" data-question="'.$questionId.'"
+                                  data-url='.BlocklyQuestion::getGameURL($blockly_game_type).'>'.get_lang('BlocklyUrlTitle').
+                                '</button>');
                 $form->addHtml('</div>');
 
                 if ($fck_content != null) {
                 $form->addHtml('<div id='.'blockly_game_saved_message'.$questionId.'>');
-                $form->addHtml('<label id="blockly_game_saved_message['.$questionId.']" name="blockly_game_saved_message">'.get_lang('BlocklySavedMessage').'</label>');
+                $form->addHtml('<label id="blockly_game_saved_message['.$questionId.']"
+                                  name="blockly_game_saved_message">'.get_lang('BlocklySavedMessage').'</label>');
                 $form->addHtml('</div>');
                 }
 
