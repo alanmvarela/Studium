@@ -5,6 +5,7 @@ for more information: see languages.txt in the lang folder.
 // Constantes de Blockly-Games - Comienzo
 $BlocklyQuestion = "Ejercicio de Blockly-Games";
 $BlocklySelectedGame = "Juego seleccionado de Blockly-Games";
+$BlocklySelectedLevel = "Nivel seleccionado para el juego de Blockly-Games";
 $puzzle = "Rompecabezas";
 $maze = "Laberinto";
 $bird = "Pájaro";
@@ -13,7 +14,7 @@ $movie = "Película";
 $music = "Música";
 $pondtutor = "Tutor del Estanque";
 $pond = "Estanque";
-$BlocklyUrl = "/%s.html?lang=es";
+$BlocklyUrl = "/%s.html?lang=es&level=%s";
 $BlocklyUrlTitle = "Haga click aqui para ir al el juego.";
 $BlocklySavedMessage = "Esta pregunta ya tiene una respuesta guardada. Si desea modificarla vuelva a hacer click en el boton para ir al juego. Sino continue con el ejercicio.";
 // Constantes de Blockly-Games - Fin
