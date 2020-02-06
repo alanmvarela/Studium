@@ -30,6 +30,19 @@ class BlocklyQuestion extends Question
       8 => 'pond',
     ];
 
+    public static $blockly_default_levels = [
+      1 => "1",
+      2 => "2",
+      3 => "3",
+      4 => "4",
+      5 => "5",
+      6 => "6",
+      7 => "7",
+      8 => "8",
+      9 => "9",
+      10 => "10",
+    ];
+
     /**
      * Constructor.
      */
@@ -47,10 +60,32 @@ class BlocklyQuestion extends Question
     {
         $blockly_default_games = self::getBlocklyDefaultGamesList();
         $form->addSelect('blockly_selected_game', get_lang('BlocklySelectedGame'), $blockly_default_games);
+
+        $form->addHtml('<div id="blockly_level" name="blockly_level" hidden="true" >');
+        $form->addSelect('blockly_selected_level', get_lang('BlocklySelectedLevel'), SELF::$blockly_default_levels);
+        $form->addHtml('</div>');
+
         $form->addElement('text', 'weighting', get_lang('Weighting'));
         global $text;
-        // setting the save button here and not in the question class.php
         $form->addButtonSave($text, 'submitQuestion');
+
+        $form->addElement('static', null, '',
+          '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
+        );
+        $form->addElement('static', null, '',
+          '<script>
+          $(\'select[name="blockly_selected_game"]\').on(\'change\', function() {
+            $selectedGame=this.value;
+            if($selectedGame == 1 || $selectedGame == 8 ){
+              $(\'#blockly_level\').hide();
+              $(\'select[name="blockly_selected_level"]\').val(1);
+            }else{
+              $(\'#blockly_level\').show();
+            }
+          });
+          </script>'
+        );
+
         if (!empty($this->id)) {
             $form->setDefaults(['weighting' => float_format($this->weighting, 1)]);
         } else {
@@ -65,7 +100,8 @@ class BlocklyQuestion extends Question
      */
     public function processAnswersCreation($form, $exercise)
     {
-        $this->extra = $form->getSubmitValue('blockly_selected_game');
+        $this->extra = htmlspecialchars($form->getSubmitValue('blockly_selected_game').
+                                        "&".$form->getSubmitValue('blockly_selected_level'));
         $this->weighting = $form->getSubmitValue('weighting');
         $this->save($exercise);
     }
@@ -106,9 +142,12 @@ class BlocklyQuestion extends Question
      * @param int $game_id
      *
      */
-    public function getGameURL($game_id)
+    public function getGameURL($game_type)
     {
-      return SELF::$blockly_url.sprintf(get_lang('BlocklyUrl'), SELF::$blockly_games_url[$game_id]);
+      $game_type_data = explode("&",htmlspecialchars_decode($game_type));
+      return SELF::$blockly_url.sprintf(get_lang('BlocklyUrl'),
+                                        SELF::$blockly_games_url[$game_type_data[0]],
+                                        $game_type_data[1]);
     }
 
 }
