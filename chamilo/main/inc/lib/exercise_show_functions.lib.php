@@ -160,26 +160,22 @@ class ExerciseShowFunctions
           // Question not found
           return false;
         }
-
-        $blockly_game_id = $objQuestionTmp->selectExtra();
+        $blockly_game_type = $objQuestionTmp->selectExtra();
         $blockly_url_param = '#'.Security::remove_XSS($answer);
-        $blockly_url = (BlocklyQuestion::getGameURL($blockly_game_id)).$blockly_url_param;
+        $blockly_url = (BlocklyQuestion::getGameURL($blockly_game_type)).$blockly_url_param;
         $comments = Event::get_comments($exe_id, $questionId);
-
-      //Shows answer
         if (!empty($answer)) {
             echo '<tr><td>';
-            echo '<a id="blockly_game_url['.$questionId.']" name="blockly_game_url" data-question="'.$questionId.'" href='.$blockly_url.'>'
-                  .get_lang('BlocklyUrlTitle').'</a>';
+            echo '<a id="blockly_game_url['.$questionId.']" name="blockly_game_url" data-question="'.$questionId.'"
+                    href='.$blockly_url.'>'.get_lang('BlocklyUrlTitle').'</a>';
             echo '</td></tr>';
         }
-
-        if (($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM)&&( $questionScore = 0 || empty($comments) )) {
-          echo '<tr>';
-          echo Display::tag('td', ExerciseLib::getNotCorrectedYetText(), []);
-          echo '</tr>';
+        if (($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM)&&($questionScore == 0 || empty($comments)) {
+                echo '<tr>';
+                echo Display::tag('td', ExerciseLib::getNotCorrectedYetText(), []);
+                echo '</tr>';
         }
-      }
+    }
 
 
     /**
