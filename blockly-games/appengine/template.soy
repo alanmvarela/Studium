@@ -77,7 +77,6 @@
 /**
  * Top toolbar for page
  * @param appName Name of application.
- * @param levelLinkSuffix Any extra parameters for links.
  * @param hasLinkButton Whether the page has a link button.
  * @param hasHelpButton Whether the page has a help button.
  * @param farLeftHtml Additional content to add to farLeft toolbar.
@@ -90,20 +89,13 @@
           {call .titleSpan}
             {param appName: $appName /}
           {/call}
-          {if $ij.level}
-            {call .levelLinks}
-              {param suffix}{if $levelLinkSuffix}{$levelLinkSuffix}{/if}{/param}
-            {/call}
-          {/if}
         </h1>
       </td>
       <td id="header_cta" class="farSide">
-        <select id="languageMenu"></select>
         {if $hasLinkButton}
           &nbsp;
-          <button id="linkButton"
-                  title="{msg meaning="Games.linkTooltip" desc="IBID"}Save and link to blocks.{/msg}">
-            <img src="common/1x1.gif" class="link icon21">
+          <button id="linkButton">
+                  {msg meaning="Games.linkToolButton" desc="button label - this button takes you back to Studium"}Go back to the exercise{/msg}
           </button>
         {/if}
         {if $hasHelpButton}
@@ -127,11 +119,7 @@
  */
 {template .titleSpan private="true"}
   <span id="title">
-    {if $ij.html}
-      <a href="index.html?lang={$ij.lang}">
-    {else}
-      <a href="./?lang={$ij.lang}">
-    {/if}
+    <a>
       {msg meaning="Games.name" desc="IBID"}Blockly Games{/msg}
     </a>
     {sp}:{sp}
