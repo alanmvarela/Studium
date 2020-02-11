@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2019-02-19 16:30:06.279742",
+		"lastupdated": "2020-02-09 22:26:44.628153",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -45,6 +45,7 @@
 	"Games.textVariable": "text",
 	"Games.breakLink": "Once you start editing JavaScript, you can't go back to editing blocks. Is this OK?",
 	"Games.blocks": "Blocks",
+	"Games.linkToolButton": "Go back to the exercise",
 	"Games.congratulations": "Congratulations!",
 	"Games.helpAbort": "This level is extremely difficult. Would you like to skip it and go onto the next game? You can always come back later.",
 	"Index.clear": "Delete all your solutions?",
