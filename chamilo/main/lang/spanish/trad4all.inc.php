@@ -13,7 +13,7 @@ $turtle = "Tortuga";
 $movie = "Película";
 $music = "Música";
 $pondtutor = "Tutor del Estanque";
-$pond = "Estanque";
+$pondduck = "Estanque";
 $BlocklyUrl = "/%s.html?lang=es&level=%s";
 $BlocklyUrlTitle = "Haga click aqui para ir al el juego.";
 $BlocklySavedMessage = "Esta pregunta ya tiene una respuesta guardada. Si desea modificarla vuelva a hacer click en el boton para ir al juego. Sino continue con el ejercicio.";
