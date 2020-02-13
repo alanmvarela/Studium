@@ -170,7 +170,7 @@ class ExerciseShowFunctions
                     href='.$blockly_url.'>'.get_lang('BlocklyUrlTitle').'</a>';
             echo '</td></tr>';
         }
-        if (($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM)&&($questionScore == 0 || empty($comments)) {
+        if (($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM)&&($questionScore == 0 || empty($comments))) {
                 echo '<tr>';
                 echo Display::tag('td', ExerciseLib::getNotCorrectedYetText(), []);
                 echo '</tr>';
