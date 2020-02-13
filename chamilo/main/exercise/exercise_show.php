@@ -808,7 +808,7 @@ foreach ($questionList as $questionId) {
         }
 
         if ($is_allowedToEdit && $isFeedbackAllowed && $action != 'export') {
-            if (in_array($answerType, [FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
+            if (in_array($answerType, [BLOCKLY_QUESTION, FREE_ANSWER, ORAL_EXPRESSION, ANNOTATION])) {
                 $marksname = "marksName".$questionId;
                 $arrmarks[] = $questionId;
 
