@@ -12,7 +12,7 @@
  */
 class BlocklyQuestion extends Question
 {
-    public static $typePicture = 'free_answer.png';
+    public static $typePicture = 'blockly_question.png';
     public static $explanationLangVar = 'BlocklyQuestion';
 
     // $blockly_url contiene la URL a la version de blockly utilizada por studium.
@@ -27,7 +27,7 @@ class BlocklyQuestion extends Question
       5 => 'movie',
       6 => 'music',
       7 => 'pond-tutor',
-      8 => 'pond',
+      8 => 'pond-duck',
     ];
 
     public static $blockly_default_levels = [
@@ -69,10 +69,7 @@ class BlocklyQuestion extends Question
         global $text;
         $form->addButtonSave($text, 'submitQuestion');
 
-        $form->addElement('static', null, '',
-          '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
-        );
-        $form->addElement('static', null, '',
+        $form->addElement('html',
           '<script>
           $(\'select[name="blockly_selected_game"]\').on(\'change\', function() {
             $selectedGame=this.value;
