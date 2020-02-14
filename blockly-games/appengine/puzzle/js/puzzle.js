@@ -62,6 +62,7 @@ Puzzle.init = function() {
 
   var savedBlocks =
       BlocklyGames.loadFromLocalStorage(BlocklyGames.NAME, BlocklyGames.LEVEL);
+
   // Add the blocks.
   try {
     var loadOnce = window.sessionStorage.loadOnceBlocks;
@@ -70,6 +71,7 @@ Puzzle.init = function() {
     // Restarting Firefox fixes this, so it looks like a bug.
     var loadOnce = null;
   }
+
   if (loadOnce) {
     delete window.sessionStorage.loadOnceBlocks;
     var xml = Blockly.Xml.textToDom(loadOnce);
@@ -77,7 +79,9 @@ Puzzle.init = function() {
   } else if (savedBlocks) {
     var xml = Blockly.Xml.textToDom(savedBlocks);
     Blockly.Xml.domToWorkspace(xml, BlocklyGames.workspace);
-  } else {
+  } else if ( window.location.hash.length > 1 ) {
+    BlocklyInterface.loadBlocks();
+  } else  {
     // Create one of every block.
     var blocksAnimals = [];
     var blocksPictures = [];
