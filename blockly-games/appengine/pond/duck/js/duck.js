@@ -197,6 +197,9 @@ Pond.Duck.init = function() {
   Pond.reset();
   Pond.Duck.changeTab(0);
   Pond.Duck.ignoreEditorChanges_ = false;
+  if ( window.location.hash.length > 1 ) {
+    BlocklyInterface.loadBlocks();
+  }
 };
 
 /**
