@@ -253,8 +253,7 @@ Puzzle.checkAnswers = function() {
     left: rtl ? '5%' : '70%',
     top: '5em'
   };
-  var action = errors ? BlocklyDialogs.stopDialogKeyDown :
-      BlocklyInterface.indexPage;
+  var action = BlocklyDialogs.stopDialogKeyDown;
   BlocklyDialogs.showDialog(content, button, true, true, style, action);
   BlocklyDialogs.startDialogKeyDown();
 
