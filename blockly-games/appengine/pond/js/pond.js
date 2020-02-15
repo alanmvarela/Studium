@@ -72,8 +72,9 @@ Pond.docsButtonClick = function() {
   var origin = document.getElementById('docsButton');
   var dialog = document.getElementById('dialogDocs');
   var frame = document.getElementById('frameDocs');
-  var src = 'pond/docs.html?lang=' + BlocklyGames.LANG +
-        '&mode=' + BlocklyGames.LEVEL;
+  //Changed this as the documentation is only available in english.
+  //var src = 'pond/docs.html?lang=' + BlocklyGames.LANG + '&mode=' + BlocklyGames.LEVEL;
+  var src = 'pond/docs.html?lang=' + 'en' + '&mode=' + BlocklyGames.LEVEL;
   if (frame.src != src) {
     frame.src = src;
   }
