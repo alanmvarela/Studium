@@ -312,9 +312,14 @@ BlocklyDialogs.storageAlert = function(origin, message) {
     top: '5em'
   };
   BlocklyDialogs.showDialog(content, origin, true, true, style,
-      BlocklyDialogs.stopDialogKeyDown);
+      BlocklyDialogs.goBackToStudium);
   BlocklyDialogs.startDialogKeyDown();
 };
+
+BlocklyDialogs.goBackToStudium = function () {
+  window.localStorage.clear();
+  window.location = decodeURIComponent(BlocklyGames.getStringParamFromUrl("currentUrl"));
+}
 
 /**
  * Display a dialog suggesting that the user give up.
@@ -400,12 +405,9 @@ BlocklyDialogs.congratulations = function() {
     var text = BlocklyGames.getMsg('Games_finalLevel');
   }
 
-  var cancel = document.getElementById('doneCancel');
-  cancel.addEventListener('click', BlocklyDialogs.hideDialog, true);
-  cancel.addEventListener('touchend', BlocklyDialogs.hideDialog, true);
   var ok = document.getElementById('doneOk');
-  ok.addEventListener('click', BlocklyInterface.nextLevel, true);
-  ok.addEventListener('touchend', BlocklyInterface.nextLevel, true);
+  ok.addEventListener('click', BlocklyDialogs.hideDialog, true);
+  ok.addEventListener('touchend', BlocklyDialogs.hideDialog, true);
 
   BlocklyDialogs.showDialog(content, null, false, true, style,
       function() {
