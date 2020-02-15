@@ -21,6 +21,7 @@
  */
 'use strict';
 
+
 // Create a namespace.
 var BlocklyStorage = {};
 
@@ -41,6 +42,7 @@ BlocklyStorage.link = function() {
 
     BlocklyStorage.soapRequest(soapBody, BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse);
   } else {
+    window.localStorage.clear();
     window.history.back();
   }
 };
@@ -127,10 +129,9 @@ BlocklyStorage.getSoapWSSaveBlocklyAttemptBody = function ( code ) {
  */
 BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse = function ( status ) {
   if (status == 200) {
-      alert("El juego fue guardado con exito.");
-      window.location = decodeURIComponent(BlocklyStorage.getUrlParameter("currentUrl"));
+      BlocklyStorage.alert("El juego fue guardado con exito.");
   } else {
-      alert("Hubo un error al guardar el juego.");
+      window.alert("Hubo un error al guardar el juego.");
   }
 }
 
@@ -162,28 +163,6 @@ BlocklyStorage.getSoapParameters = function () {
 
   return soapParameters;
 }
-
-/**
- * Returns a given parameter from the current page URL querystring.
- * Return null if the parameter is not present.
- * @param {string} searchParam Text of the seached parameter.
- *
- * @author Alan Varela
- */
-BlocklyStorage.getUrlParameter = function (searchParam) {
-    var url = window.location.search,
-        urlParameters = (url.substring(1, url.length)).split('&'),
-        currentParameter,
-        i;
-
-    for (i = 0; i < urlParameters.length; i++) {
-        currentParameter = urlParameters[i].split('=');
-
-        if (currentParameter[0] === searchParam) {
-            return currentParameter[1] === undefined ? null : decodeURIComponent(currentParameter[1]);
-        }
-    }
-};
 
 /**
  * Present a text message to the user.
