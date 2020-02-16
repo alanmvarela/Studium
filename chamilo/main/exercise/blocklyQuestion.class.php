@@ -59,7 +59,12 @@ class BlocklyQuestion extends Question
     public function createAnswersForm($form)
     {
         $blockly_default_games = self::getBlocklyDefaultGamesList();
+        $blockly_default_games_descriptions = self::getBlocklyDefaultGamesDescription();
+
+        $form->getElement('questionName')->setLabel(get_lang('BlocklyQuestionLabel'));
+
         $form->addSelect('blockly_selected_game', get_lang('BlocklySelectedGame'), $blockly_default_games);
+        $form->addElement('textarea', 'blockly_selected_game_description', '', array('size' => 50, 'readOnly', 'style'=>'resize:none'));
 
         $form->addHtml('<div id="blockly_level" name="blockly_level" hidden="true" >');
         $form->addSelect('blockly_selected_level', get_lang('BlocklySelectedLevel'), SELF::$blockly_default_levels);
@@ -73,19 +78,25 @@ class BlocklyQuestion extends Question
           '<script>
           $(\'select[name="blockly_selected_game"]\').on(\'change\', function() {
             $selectedGame=this.value;
+            $blocklyGamesDescriptions='. json_encode($blockly_default_games_descriptions, JSON_UNESCAPED_UNICODE) .'
             if($selectedGame == 1 || $selectedGame == 8 ){
               $(\'#blockly_level\').hide();
               $(\'select[name="blockly_selected_level"]\').val(1);
             }else{
               $(\'#blockly_level\').show();
             }
+            $(\'textarea[name="blockly_selected_game_description"]\').val($blocklyGamesDescriptions[$selectedGame]);
           });
           </script>'
         );
 
         if (!empty($this->id)) {
+            $game_type_data = explode("&",htmlspecialchars_decode($this->extra));
+            $form->setDefaults(['blockly_selected_game' => $game_type_data[0]]);
+            $form->setDefaults(['blockly_selected_game_description' => $blockly_default_games_descriptions[$game_type_data[0]]]);
             $form->setDefaults(['weighting' => float_format($this->weighting, 1)]);
         } else {
+            $form->setDefaults(['blockly_selected_game_description' => $blockly_default_games_descriptions[1]]);
             if ($this->isContent == 1) {
                 $form->setDefaults(['weighting' => '10']);
             }
@@ -131,6 +142,21 @@ class BlocklyQuestion extends Question
       }
 
       return $select_blockly_game;
+    }
+
+    /**
+     * Devuelve un arreglo con las descripciones de los juegos disponibles en
+     * Blockly-Games segun el lenguaje de la plataforma.
+     */
+    public static function getBlocklyDefaultGamesDescription()
+    {
+      $description_blockly_games = [];
+
+      foreach (SELF::$blockly_games_url as $index => $value){
+        $description_blockly_games[$index] = get_lang(str_replace('-','',$value)."_description");
+      }
+
+      return $description_blockly_games;
     }
 
     /**
