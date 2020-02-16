@@ -43,7 +43,8 @@ BlocklyStorage.link = function() {
     BlocklyStorage.soapRequest(soapBody, BlocklyStorage.handleSoapWSSaveBlocklyAttemptResponse);
   } else {
     window.localStorage.clear();
-    window.history.back();
+    window.opener.focus();
+    window.close();
   }
 };
 
