@@ -167,7 +167,7 @@ class ExerciseShowFunctions
         if (!empty($answer)) {
             echo '<tr><td>';
             echo '<a id="blockly_game_url['.$questionId.']" name="blockly_game_url" data-question="'.$questionId.'"
-                    href='.$blockly_url.'>'.get_lang('BlocklyUrlTitle').'</a>';
+                    href='.$blockly_url.' target="_blank">'.get_lang('BlocklyUrlTitle').'</a>';
             echo '</td></tr>';
         }
         if (($feedback_type != EXERCISE_FEEDBACK_TYPE_EXAM)&&($questionScore == 0 || empty($comments))) {
