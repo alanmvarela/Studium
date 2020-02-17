@@ -16,7 +16,7 @@ class BlocklyQuestion extends Question
     public static $explanationLangVar = 'BlocklyQuestion';
 
     // $blockly_url contiene la URL a la version de blockly utilizada por studium.
-    public static $blockly_url = 'http://blockly-studium';
+    public static $blockly_url = 'http://studium/main/blockly-games/appengine';
 
     // $blockly_games_url contiene la parte de la url de blockly-games correpondiente a cada juego disponible.
     public static $blockly_games_url = [
