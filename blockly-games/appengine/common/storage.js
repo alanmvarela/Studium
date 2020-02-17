@@ -36,7 +36,7 @@ BlocklyStorage.link = function() {
       urlParameters = (url.substring(9, url.length)).split('&');
 
   //IF THERE ARE PARAMETERS ON THE URL THEN A STUDENT IS EXECUTING THE GAME. OTHERWISE A TEACHER IS CORRECTING THE GAME.
-  if (urlParameters.length > 1){
+  if (urlParameters.length > 2){
     var code = BlocklyInterface.getCode(),
         soapBody = BlocklyStorage.getSoapWSSaveBlocklyAttemptBody(encodeURIComponent(code));
 
