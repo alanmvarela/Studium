@@ -23,7 +23,7 @@ $movie_description = "Movie is an introduction to mathematical equations. Use ma
 $music_description = "Music is an introduction to functions. Use functions to compose music. Then publish your music for the world to listen to.";
 $pondtutor_description = "Pond Tutor introduces text-based programming. Levels switch back and forth between blocks and actual JavaScript in a text editor.";
 $pondduck_description = "Pond is an open-ended contest to program the smartest duck. Use either blocks or JavaScript.";
-$BlocklyUrl = "/%s.html?lang=en&level=&s";
+$BlocklyUrl = "/%s.html?lang=en&level=%s";
 $BlocklyUrlTitle = "Click here to start this game.";
 $BlocklySavedMessage = "This question already have a saved answer. If you wish to change it click on the go to the game button. Otherwise continue with the exercise.";
 $OpenQuestionsAttempted = "A learner has answered an open question or attempted a Blockly-Games game";
