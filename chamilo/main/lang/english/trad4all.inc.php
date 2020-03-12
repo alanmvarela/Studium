@@ -3,7 +3,7 @@
 for more information: see languages.txt in the lang folder.
 */
 // Blockly-Games constants - Begin
-$BlocklyQuestion = "Blockly-Games Exercise";
+$BlocklyQuestion = "Blockly Game";
 $BlocklySelectedGame = "Blockly-Games selected Game";
 $BlocklySelectedLevel = "Selected level for Blockly-Games Game";
 $BlocklyQuestionLabel = "Question";
