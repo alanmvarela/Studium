@@ -24,7 +24,7 @@ $music_description = "El juego Música es una introduccion a las funciones. Se u
 $pondtutor_description = "El juego Tutor del Estanque introduce en la programación basada en texto. Los niveles van y vienen entre el codigo en bloques y un editor de JavaScript.";
 $pondduck_description = "El juego Estanque es un desafio de final abierto para programar el pato mas inteligente!. Da la opcion de usar programacion de Bloques o un editor de JavaScript.";
 $BlocklyUrl = "/%s.html?lang=es&level=%s";
-$BlocklyUrlTitle = "Haga click aqui para ir al el juego.";
+$BlocklyUrlTitle = "Haga clic aqui para ir al el juego.";
 $BlocklySavedMessage = "Esta pregunta ya tiene una respuesta guardada. Si desea modificarla vuelva a hacer click en el boton para ir al juego. Sino continue con el ejercicio.";
 $OpenQuestionsAttempted = "Un alumno ha contestado a una pregunta abierta o ha intentado un juego de Blockly-Games";
 $OpenQuestionsAttemptedAre = "La pregunta abierta o el juego de Blockly-Games intentada/o está";
