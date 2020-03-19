@@ -16,7 +16,7 @@ class BlocklyQuestion extends Question
     public static $explanationLangVar = 'BlocklyQuestion';
 
     // $blockly_url contiene la URL a la version de blockly utilizada por studium.
-    public static $blockly_url = 'http://studium/main/blockly-games/appengine';
+    public static $blockly_url = 'main/blockly-games/appengine';
 
     // $blockly_games_url contiene la parte de la url de blockly-games correpondiente a cada juego disponible.
     public static $blockly_games_url = [
@@ -165,12 +165,20 @@ class BlocklyQuestion extends Question
      * @param int $game_id
      *
      */
-    public function getGameURL($game_type)
-    {
-      $game_type_data = explode("&",htmlspecialchars_decode($game_type));
-      return SELF::$blockly_url.sprintf(get_lang('BlocklyUrl'),
-                                        SELF::$blockly_games_url[$game_type_data[0]],
-                                        $game_type_data[1]);
-    }
+     public function getGameURL($game_type)
+     {
+       $game_type_data = explode("&",htmlspecialchars_decode($game_type));
+       $url = SELF::siteURL().SELF::$blockly_url.sprintf(get_lang('BlocklyUrl'),
+                                         SELF::$blockly_games_url[$game_type_data[0]],
+                                         $game_type_data[1]);
+       return $url;
+     }
+
+     public function siteURL()
+     {
+       $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+       $domainName = $_SERVER['HTTP_HOST'].'/';
+       return $protocol.$domainName;
+     }
 
 }

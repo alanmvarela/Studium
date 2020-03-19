@@ -76,9 +76,10 @@ BlocklyStorage.backupOnUnload = function() {
  */
 BlocklyStorage.soapRequest = function( soapBody, callBackFunction ) {
     var xmlhttp = new XMLHttpRequest();
+    var ws_url = window.location.protocol +'//' + window.location.hostname + '/main/webservices/blockly-games.soap.php?wsdl';
 
-    xmlhttp.open('POST', 'http://studium/main/webservices/blockly-games.soap.php?wsdl', true);
-
+    xmlhttp.open('POST', ws_url, true);
+    
     // build SOAP request
     var sr =
         '<?xml version="1.0" encoding="utf-8"?>' +
